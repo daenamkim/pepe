@@ -1,3 +1,10 @@
+![PePe Logo](./public/img/logo.png)
+
+**PePe** is an app to play around Peer-To-Peer using [PeerJS](https://peerjs.com/).
+
+
+# Below must be updated!!
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
