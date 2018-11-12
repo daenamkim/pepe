@@ -4,8 +4,9 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+// TODO: how could i get peerjs key.
 var options = {
-	peerjs_key: 'your peerjs key'
+	peerjsKey: 'your peerjs key'
 };
 
 ReactDOM.render(<App opts={options} />, document.getElementById('root'));

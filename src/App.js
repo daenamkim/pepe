@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import randomstring from 'randomstring';
 import Peer from 'peerjs';
-import logo from './logo.svg';
+import logo from './img/logo.png';
 import './App.css';
 
 class App extends Component {
@@ -125,20 +125,27 @@ class App extends Component {
 		var result;
 
 		if(this.state.initialized){
-			result = (
+			result =
 				<div>
 					<div>
-            <span>{this.props.opts.my_id_label || 'Your PeerJS ID:'} </span>
+						<img src={logo} className="app-logo" alt="Logo"></img>
+					</div>
+					<div>
+						{/* TODO: how to get my id label */}
+            <span>{this.props.opts.myIdLabel || 'Your PeerJS ID:'} </span>
             <strong className="mui--divider-left">{this.state.my_id}</strong>
 					</div>
 					{this.state.connected ? this.renderConnected() : this.renderNotConnected()}
-				</div>
-			);
+				</div>;
 		} else {
 			result = <div>Loading...</div>;
 		}
 
-		return result;
+		return (
+			<div className="app app-container">
+				{result}
+			</div>
+		);
 	}
 
 	renderNotConnected() {
@@ -206,29 +213,6 @@ class App extends Component {
 			</tr>
 		);
 	}
-
-
-  // render() {
-  //   return (
-  //     <div className="App">
-  //       <header className="App-header">
-  //         <img src={logo} className="App-logo" alt="logo" />
-  //         <p>
-  //           What a amazing tools!!!!!!
-  //           Edit <code>src/App.js</code> and save to reload.
-  //         </p>
-  //         <a
-  //           className="App-link"
-  //           href="https://reactjs.org"
-  //           target="_blank"
-  //           rel="noopener noreferrer"
-  //         >
-  //           Learn React
-  //         </a>
-  //       </header>
-  //     </div>
-  //   );
-  // }
 }
 
 export default App;
