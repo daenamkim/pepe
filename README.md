@@ -1,3 +1,5 @@
+# PePe [build tests]
+
 ![PePe Logo](./public/img/logo.png)
 
 **PePe** is an app to play around Peer-To-Peer using [PeerJS](https://peerjs.com/).
@@ -51,9 +53,9 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 To learn React, check out the [React documentation](https://reactjs.org/).
 
 
-##
+# Useful Resources
 
-https://medium.com/@kitze/%EF%B8%8F-from-react-to-an-electron-app-ready-for-production-a0468ecb1da3
-https://www.sitepoint.com/file-sharing-component-react/
-https://webrtc.org/start/
-https://peerjs.com/
+- [From React to an Electron app ready for production](https://medium.com/@kitze/%EF%B8%8F-from-react-to-an-electron-app-ready-for-production-a0468ecb1da3)
+- [Build a Peer-to-Peer File Sharing Component in React & PeerJS](https://www.sitepoint.com/file-sharing-component-react/)
+- [Web RTC](https://webrtc.org/start/)
+- [PEER JS](https://peerjs.com/)
