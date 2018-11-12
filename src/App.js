@@ -6,9 +6,10 @@ import './App.css';
 
 class App extends Component {
   constructor(props) {
-    super(props);
+		super(props);
+		// TODO: when peer is not in the state, render didn't work well.
     this.state = {
-      peer: new Peer({key: this.props.opts.peerjs_key}), //for testing
+      peer: new Peer({key: this.props.opts.peerjsKey}), //for testing
 			/*
 			//for production:
 			peer = new Peer({
@@ -20,10 +21,11 @@ class App extends Component {
 			  ]}
 			})
 			*/
-			my_id: '',
-			peer_id: '',
+			myId: '',
+			peerId: '',
 			initialized: false,
-			files: []
+			files: [],
+			conn: null,
 		};
   }
 
@@ -31,7 +33,7 @@ class App extends Component {
 		this.state.peer.on('open', (id) => {
 			console.log('My peer ID is: ' + id);
 			this.setState({
-				my_id: id,
+				myId: id,
 				initialized: true
 			});
 		});
@@ -59,8 +61,8 @@ class App extends Component {
 	}
 
 	connect = () => {
-		var peer_id = this.state.peer_id;
-		var connection = this.state.peer.connect(peer_id);
+		var peerId = this.state.peerId;
+		var connection = this.state.peer.connect(peerId);
 
 		this.setState({
 		    conn: connection
@@ -117,34 +119,37 @@ class App extends Component {
 
 	handleTextChange = (event) => {
 		this.setState({
-		  peer_id: event.target.value
+		  peerId: event.target.value
 		});
 	};
 
 	render() {
-		var result;
-
-		if(this.state.initialized){
-			result =
-				<div>
-					<div>
-						<img src={logo} className="app-logo" alt="Logo"></img>
-					</div>
-					<div>
-						{/* TODO: how to get my id label */}
-            <span>{this.props.opts.myIdLabel || 'Your PeerJS ID:'} </span>
-            <strong className="mui--divider-left">{this.state.my_id}</strong>
-					</div>
-					{this.state.connected ? this.renderConnected() : this.renderNotConnected()}
-				</div>;
-		} else {
-			result = <div>Loading...</div>;
-		}
-
 		return (
 			<div className="app app-container">
-				{result}
+				{this.state.initialized ? this.renderInitialized() : this.renderNotInitialized()}
 			</div>
+		);
+	}
+
+	renderInitialized() {
+		return (
+			<div>
+				<div>
+					<img src={logo} className="app-logo" alt="Logo"></img>
+				</div>
+				<div>
+					{/* TODO: how to get my id label */}
+					<span>{this.props.opts.myIdLabel || 'Your PeerJS ID:'} </span>
+					<strong className="mui--divider-left">{this.state.myId}</strong>
+				</div>
+				{this.state.connected ? this.renderConnected() : this.renderNotConnected()}
+			</div>
+		);
+	}
+
+	renderNotInitialized() {
+		return (
+			<div>Loading...</div>
 		);
 	}
 
@@ -154,10 +159,10 @@ class App extends Component {
 				<hr />
 				<div className="mui-textfield">
 					<input type="text" className="mui-textfield" onChange={this.handleTextChange} />
-					<label>{this.props.opts.peer_id_label || 'Peer ID'}</label>
+					<label>{this.props.opts.peerIdLabel || 'Peer ID'}</label>
 				</div>
 				<button className="mui-btn mui-btn--accent" onClick={this.connect}>
-					{this.props.opts.connect_label || 'connect'}
+					{this.props.opts.connectLabel || 'connect'}
 				</button>
 			</div>
 		);
@@ -182,7 +187,7 @@ class App extends Component {
 	renderListFiles() {
 		return (
 			<div id="file_list">
-      			<table className="mui-table mui-table--bordered">
+				<table className="mui-table mui-table--bordered">
 					<thead>
 					  <tr>
 					    <th>{this.props.opts.file_list_label || 'Files shared to you: '}</th>
