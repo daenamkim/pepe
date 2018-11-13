@@ -26,7 +26,23 @@
 }
 
 .section-title {
+  text-align: left;
   font-weight: bold;
+}
+
+.p-10 {
+  padding: 10px;
+}
+
+hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0.5px solid #dedede;
+}
+
+/* renderInitialized */
+.my-id {
+  line-height: 30px;
 }
 
 /* renderNotConnected */

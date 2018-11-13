@@ -3,7 +3,10 @@ import randomstring from 'randomstring';
 import Peer from 'peerjs';
 import logo from './img/logo.png';
 import './App.css';
-import { Button, TextField } from '@material-ui/core';
+import { Button, TextField, List, ListItem, ListItemText, ListItemIcon, Chip } from '@material-ui/core';
+import { Drafts, Face } from '@material-ui/icons';
+import copy from 'clipboard-copy';
+
 
 const TYPE_FILE = 'file';
 const TYPE_TEXT = 'text';
@@ -30,7 +33,7 @@ class App extends Component {
 			initialized: false,
 			files: [],
 			textReceived: '',
-			textSend: null,
+			textSend: '',
 			conn: null,
 		};
   }
@@ -83,8 +86,12 @@ class App extends Component {
 	};
 
 	sendFile = (event) => {
-    console.log(event.target.files);
-    var file = event.target.files[0];
+		console.log(event.target.files);
+		if (!event.target.files) {
+			return;
+		}
+
+		var file = event.target.files[0];
     var blob = new Blob(event.target.files, {type: file.type});
 
     this.state.conn.send({
@@ -160,16 +167,21 @@ class App extends Component {
 	}
 
 	renderInitialized() {
+		const myId = this.state.myId;
+
 		return (
 			<div>
 				<div>
 					<img src={logo} className="app-logo" alt="Logo"></img>
 				</div>
-				<div>
+				<div className="my-id">
 					{/* TODO: how to get my id label */}
 					<span>{this.props.opts.myIdLabel || 'Your PeerJS ID:'} </span>
-					<strong>{this.state.myId}</strong>
+					<Chip icon={<Face />}label={myId} onClick={() => {
+						copy(myId);
+					}} />
 				</div>
+				<hr />
 				{this.state.connected ? this.renderConnected() : this.renderNotConnected()}
 			</div>
 		);
@@ -184,8 +196,7 @@ class App extends Component {
 	renderNotConnected() {
 		return (
 			<div>
-				<hr />
-				<div>
+				<div className="p-10">
 					<TextField
 						className="input-peer-id"
 						onChange={this.handleTextChange}
@@ -193,7 +204,7 @@ class App extends Component {
 						variant="outlined" fullWidth={true}
 					/>
 				</div>
-				<div>
+				<div className="p-10">
 					<Button
 						onClick={this.connect}
 						variant="contained"
@@ -209,8 +220,7 @@ class App extends Component {
 	renderConnected() {
 		return (
 			<div>
-				<hr />
-				<div>
+				<div className="p-10">
 					<TextField
 						className="text-send"
 						value={this.state.textSend}
@@ -221,7 +231,7 @@ class App extends Component {
 						fullWidth={true}
 					/>
 				</div>
-				<div>
+				<div className="p-10">
 					<input type="file" name="file" id="file" onChange={this.sendFile} style={{display: "none"}} />
 					<Button
 						type="file"
@@ -234,9 +244,11 @@ class App extends Component {
 						+
 					</Button>
 				</div>
-				<div>
-					<hr />
-					<span className="section-title">Text shared to you</span>
+				<hr />
+				<div className="p-10 section-title">
+					<span>Text shared to you:</span>
+				</div>
+				<div className="p-10">
 					<TextField
 						className="input-peer-id"
 						value={this.state.textReceived || 'No text received.'}
@@ -246,40 +258,48 @@ class App extends Component {
 						multiline={true}
 					/>
 				</div>
-				<div>
-					<hr />
-					{this.state.files.length ? this.renderListFiles() : this.renderNoFiles()}
+				<div className="p-10 section-title">
+					<span>
+						{this.props.opts.fileListLabel || 'Files shared to you: '}
+					</span>
+				</div>
+				<div className="p-10">
+					{this.state.files.length ? this.renderFiles() : this.renderNoFiles()}
 				</div>
 			</div>
 		);
 	}
 
-	renderListFiles() {
+	renderFiles() {
+		return(
+			<List component="nav">
+				{this.state.files.map(item => {
+					return(
+						<ListItem
+							button
+							key={item.id}
+							component="a"
+							href={item.url}
+							download={item.name}
+						>
+							<ListItemIcon>
+								<Drafts />
+							</ListItemIcon>
+							<ListItemText primary={item.name} />
+						</ListItem>
+					);
+				})}
+			</List>
+		);
+	}
+
+  renderNoFiles() {
 		return (
-			<div id="file_list">
-				<span className="section-title">{this.props.opts.fileListLabel || 'Files shared to you: '}</span>
-				<table>
-					{this.state.files.map(this.renderFile, this)}
-				</table>
+			<div>
+				<span>
+					{this.props.opts.noFilesLabel || 'No files shared to you yet.'}
+				</span>
 			</div>
-		);
-	}
-
-  renderNoFiles = () => {
-		return (
-			<span id="no_files_message">
-				{this.props.opts.no_files_label || 'No files shared to you yet'}
-			</span>
-		);
-	}
-
-	renderFile = (file) => {
-		return (
-			<tr key={file.id}>
-				<td>
-					<a href={file.url} download={file.name}>{file.name}</a>
-				</td>
-			</tr>
 		);
 	}
 }
