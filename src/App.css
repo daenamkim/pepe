@@ -24,3 +24,22 @@
 .app-container {
   margin: 30px 20%;
 }
+
+.section-title {
+  font-weight: bold;
+}
+
+/* renderNotConnected */
+.input-peer-id {
+  text-align: center;
+}
+
+/* renderConnected */
+.text-send {
+}
+
+.text-received {
+  padding: 10px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}

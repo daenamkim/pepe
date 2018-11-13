@@ -3,6 +3,10 @@ import randomstring from 'randomstring';
 import Peer from 'peerjs';
 import logo from './img/logo.png';
 import './App.css';
+import { Button, TextField } from '@material-ui/core';
+
+const TYPE_FILE = 'file';
+const TYPE_TEXT = 'text';
 
 class App extends Component {
   constructor(props) {
@@ -25,6 +29,8 @@ class App extends Component {
 			peerId: '',
 			initialized: false,
 			files: [],
+			textReceived: '',
+			textSend: null,
 			conn: null,
 		};
   }
@@ -82,34 +88,56 @@ class App extends Component {
     var blob = new Blob(event.target.files, {type: file.type});
 
     this.state.conn.send({
+				type: TYPE_FILE,
         file: blob,
         filename: file.name,
         filetype: file.type
     });
 	};
 
+	sendText = (event) => {
+		const text = event.target.value;
+		console.log(text);
+		this.setState({
+			textSend: text
+		});
+		this.state.conn.send({
+			type: TYPE_TEXT,
+			text
+		});
+	};
+
 	onReceiveData = (data) => {
 		console.log('Received', data);
-		var blob = new Blob([data.file], {type: data.filetype});
-		var url = URL.createObjectURL(blob);
-
-		this.addFile({
-			'name': data.filename,
-			'url': url
-		});
+		switch (data.type) {
+			case TYPE_FILE:
+				const blob = new Blob([data.file], {type: data.filetype});
+				const url = URL.createObjectURL(blob);
+				this.addFile({
+					'name': data.filename,
+					'url': url
+				});
+				break;
+			case TYPE_TEXT:
+				this.setState({
+					textReceived: data.text
+				});
+				break;
+			default:
+		}
   };
 
 	addFile = (file) => {
-		var file_name = file.name;
-		var file_url = file.url;
+		const fileName = file.name;
+		const fileUrl = file.url;
 
-		var files = this.state.files;
-		var file_id = randomstring.generate(5);
+		const files = this.state.files;
+		const fileId = randomstring.generate(5);
 
 		files.push({
-			id: file_id,
-			url: file_url,
-			name: file_name
+			id: fileId,
+			url: fileUrl,
+			name: fileName
 		});
 
 		this.setState({
@@ -140,7 +168,7 @@ class App extends Component {
 				<div>
 					{/* TODO: how to get my id label */}
 					<span>{this.props.opts.myIdLabel || 'Your PeerJS ID:'} </span>
-					<strong className="mui--divider-left">{this.state.myId}</strong>
+					<strong>{this.state.myId}</strong>
 				</div>
 				{this.state.connected ? this.renderConnected() : this.renderNotConnected()}
 			</div>
@@ -157,13 +185,23 @@ class App extends Component {
 		return (
 			<div>
 				<hr />
-				<div className="mui-textfield">
-					<input type="text" className="mui-textfield" onChange={this.handleTextChange} />
-					<label>{this.props.opts.peerIdLabel || 'Peer ID'}</label>
+				<div>
+					<TextField
+						className="input-peer-id"
+						onChange={this.handleTextChange}
+						label={this.props.opts.peerIdLabel || 'Peer ID'}
+						variant="outlined" fullWidth={true}
+					/>
 				</div>
-				<button className="mui-btn mui-btn--accent" onClick={this.connect}>
-					{this.props.opts.connectLabel || 'connect'}
-				</button>
+				<div>
+					<Button
+						onClick={this.connect}
+						variant="contained"
+						color="primary"
+					>
+						{this.props.opts.connectLabel || 'connect'}
+					</Button>
+				</div>
 			</div>
 		);
 	}
@@ -173,8 +211,40 @@ class App extends Component {
 			<div>
 				<hr />
 				<div>
-					<input type="file" name="file" id="file" className="mui--hide" onChange={this.sendFile} />
-					<label htmlFor="file" className="mui-btn mui-btn--small mui-btn--primary mui-btn--fab">+</label>
+					<TextField
+						className="text-send"
+						value={this.state.textSend}
+						onChange={this.sendText}
+						variant="outlined"
+						label="Send Text"
+						multiline={true}
+						fullWidth={true}
+					/>
+				</div>
+				<div>
+					<input type="file" name="file" id="file" onChange={this.sendFile} style={{display: "none"}} />
+					<Button
+						type="file"
+						name="file"
+						id="file"
+						onClick={() => document.getElementById('file').click()}
+						variant="fab"
+						color="secondary"
+					>
+						+
+					</Button>
+				</div>
+				<div>
+					<hr />
+					<span className="section-title">Text shared to you</span>
+					<TextField
+						className="input-peer-id"
+						value={this.state.textReceived || 'No text received.'}
+						label={'Received Text'}
+						variant="outlined"
+						fullWidth={true}
+						multiline={true}
+					/>
 				</div>
 				<div>
 					<hr />
@@ -187,15 +257,9 @@ class App extends Component {
 	renderListFiles() {
 		return (
 			<div id="file_list">
-				<table className="mui-table mui-table--bordered">
-					<thead>
-					  <tr>
-					    <th>{this.props.opts.file_list_label || 'Files shared to you: '}</th>
-					  </tr>
-					</thead>
-					<tbody>
-						{this.state.files.map(this.renderFile, this)}
-					</tbody>
+				<span className="section-title">{this.props.opts.fileListLabel || 'Files shared to you: '}</span>
+				<table>
+					{this.state.files.map(this.renderFile, this)}
 				</table>
 			</div>
 		);

@@ -17,6 +17,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^3.4.0",
+    "@material-ui/icons": "^3.0.1",
     "electron-is-dev": "^1.0.1",
     "peerjs": "^0.3.18",
     "randomstring": "^1.1.5",
