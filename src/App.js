@@ -16,7 +16,7 @@ class App extends Component {
 		super(props);
 		// TODO: when peer is not in the state, render didn't work well.
     this.state = {
-      peer: new Peer({key: this.props.opts.peerjsKey}), //for testing
+      peer: new Peer({key: this.props.opts.peerjsKey, debug: 3}), //for testing
 			/*
 			//for production:
 			peer = new Peer({
