@@ -72,3 +72,4 @@ After finishing build, in `dist` directory you can see binary files for macOS, L
 - [PEER JS](https://peerjs.com/docs/)
 - [WebRTC](https://en.wikipedia.org/wiki/WebRTC)
 - [Web RTC Architecture](https://webrtc.org/architecture/)
+- [Material-UI](https://material-ui.com/)
