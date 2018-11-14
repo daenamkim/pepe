@@ -1,6 +1,5 @@
 # PePe
 
-
 ![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
 
 ![PePe Logo](./readme/web-app.png)
@@ -13,7 +12,6 @@ Open the link as below in **two browser tabs** and
 follow [here](https://github.com/daenamkim/pepe#connection-between-apps) to play.
 
 [PePe Demo](https://pe-pe.herokuapp.com/)
-
 
 # Play On Local Environment
 
