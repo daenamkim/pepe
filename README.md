@@ -3,12 +3,19 @@
 
 ![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
 
-
 ![PePe Logo](./readme/web-app.png)
 
 **PePe** is an app to play around Peer-To-Peer using [PeerJS](https://peerjs.com/). Also it can be converted to desktop app such as macOS, Windows and Linux.
 
-# Usage
+# Play Demo Online
+
+Open the link as below in **two browser tabs** and
+follow [here](https://github.com/daenamkim/pepe#connection-between-apps) to play.
+
+[PePe Demo](https://pe-pe.herokuapp.com/)
+
+
+# Play On Local Environment
 
 From now on, we are going to do peer-to-peer connection between Web App and Desktop App.
 
