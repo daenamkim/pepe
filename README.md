@@ -38,7 +38,7 @@ Access `http://localhost:3000` then you can see as below.
 
 ![PePe Web App](./readme/web-app.png)
 
-## Connection between apps.
+## Connection Between Apps.
 
 OK everything is ready. Let's connect between two apps.
 
