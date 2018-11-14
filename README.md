@@ -1,12 +1,18 @@
 # PePe
 
-![PePe Logo](./readme/pepe.png)
+
+![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
+
+
+![PePe Logo](./readme/web-app.png)
 
 **PePe** is an app to play around Peer-To-Peer using [PeerJS](https://peerjs.com/). Also it can be converted to desktop app such as macOS, Windows and Linux.
 
 # Usage
 
-## Development
+From now on, we are going to do peer-to-peer connection between Web App and Desktop App.
+
+## Setup
 
 First, clone this repository to your environment.
 
@@ -16,32 +22,40 @@ Install packages.
 $ yarn
 ```
 
-Run `yarn electron-dev` then you can see a desktop app is populated.
+Run `yarn electron-dev` then you can see a desktop app populated and access a web app through the browser.
 
 ```
 $ yarn electron-dev
 ```
 
+## Desktop App
+
 ![PePe Desktop App](./readme/desktop-app.png)
 
-Click your `PeerJS ID`.
+## Web App
 
-Access `http://localhost:3000` and paste ID you just copied to `Peer ID` input box and click a `CONNECT` button.
+Access `http://localhost:3000` then you can see as below.
 
 ![PePe Web App](./readme/web-app.png)
 
-If you see a view as below then connection between peers was successful and everything is ready to play.
+## Connection between apps.
 
-![PePe Logged In](./readme/logged-in.png)
+OK everything is ready. Let's connect between two apps.
 
-Send some texts then that will be shown in the peer node also send a file then that will be sent and can be downloaded in the peer node as well.
+1. Copy a `Your PeerJS ID` from the web app and paste it to `Peer ID` in the desktop app (or vice versa).
+2. Click `CONNECT` in the desktop app.
 
+> NOTICE: Sometimes connection fails because each ID has a lifetime limit and code is using a test signaling server provided from [PeerJS](https://peerjs.com/) unstable occasionally. Feel free to run again. :)
 
-> NOTICE: Sometimes connection could be failed because I just use test signaling server provided from [PeerJS](https://peerjs.com/).
+![PePe Connecting](./readme/connecting.png)
+
+3. Connection succeeded then you can see as below then send a text or a file to each peer and download it.
+
+![PePe Connected](./readme/connected.png)
 
 ## Distribution To A Desktop App
 
-If you want to just run `yarn electron-pack`. (Wait for minutes.)
+If you want to distribute this app, just run `yarn electron-pack`. (Wait for minutes.)
 
 ```sh
 $ yarn electron-pack
@@ -63,6 +77,13 @@ $
 After finishing build, in `dist` directory you can see binary files for macOS, Linux and Windows.
 
 ![PePe Distributions](./readme/dist.png)
+
+# TODO in the future
+
+- [ ] Multiple connections of peers.
+- [ ] Building up a signaling server using Serverless.
+- [ ] Automatic getting candidate nodes on running client app.
+- [ ] Cool TDD.
 
 # Useful Resources
 
